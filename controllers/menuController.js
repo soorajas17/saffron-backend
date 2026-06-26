@@ -2,11 +2,11 @@ const menus = require("../model/menuModal");
 
 
 //add menu item
-exports.addMenuItem = async (req, res) => {
+exports.addMenuItemController = async (req, res) => {
   console.log("Inside addProjectController");
   const userId = req.userId
   console.log(userId);
-  const { itemName, description, category, price } = req.body
+  const { itemName, description, category, price,availability } = req.body
   const menuPic = req.file.filename
   console.log(itemName, description, category, price,menuPic);
 
@@ -37,9 +37,9 @@ exports.addMenuItem = async (req, res) => {
 //get all menu item
 exports.getAllMenuItemsController = async (req, res) => {
   try {
-    const AllmenuItems = await menus.find();
+    const getAllmenuItems = await menus.find();
 
-    res.status(200).json(AllmenuItems);
+    res.status(200).json(getAllmenuItems);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -52,15 +52,15 @@ exports.getSingleMenuItemController = async (
   try {
     const { id } = req.params;
 
-    const item = await menus.findById(id);
+    const getsingleitem = await menus.findById(id);
 
-    if (!item) {
+    if (! getsingleitem) {
       return res
         .status(404)
         .json("Food item not found");
     }
 
-    res.status(200).json(item);
+    res.status(200).json(getsingleitem);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -83,7 +83,7 @@ exports.editMenuController = async (req, res) => {
         category,
         price,
         menuPic: uploadImage,
-        isAvailable,
+         availability,
       },
       { new: true }
     );

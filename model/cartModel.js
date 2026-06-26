@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const reviewSchema = new mongoose.Schema(
+const cartSchema = new mongoose.Schema(
   {
     userId: {
       type: String,
@@ -12,20 +12,28 @@ const reviewSchema = new mongoose.Schema(
       required: true,
     },
 
-    userName: {
+    foodName: {
       type: String,
       required: true,
     },
 
-    rating: {
+    image: {
+      type: String,
+      required: true,
+    },
+
+    price: {
       type: Number,
       required: true,
-      min: 1,
-      max: 5,
     },
 
-    comment: {
-      type: String,
+    quantity: {
+      type: Number,
+      default: 1,
+    },
+
+    subtotal: {
+      type: Number,
       required: true,
     },
   },
@@ -34,6 +42,6 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
-const reviews = mongoose.model("review", reviewSchema);
+const carts = mongoose.model("cart", cartSchema);
 
-module.exports = reviews;
+module.exports = carts;

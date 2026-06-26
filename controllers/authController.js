@@ -43,3 +43,15 @@ exports.logincontroller=async(req,res)=>{
     }
     
 }
+
+// to get all users
+exports.getAllUserController=async(req,res)=>{
+    console.log("Inside getAllUserController");
+    try {
+        const allUsers=await users.find({role:"User"})
+        res.status(200).json(allUsers)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+    
+}

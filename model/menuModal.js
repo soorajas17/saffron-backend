@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const menuSchema = new mongoose.Schema(
   {
-    foodName: {
+     itemName: {
       type: String,
       required: true,
     },
@@ -22,7 +22,7 @@ const menuSchema = new mongoose.Schema(
       required: true,
     },
 
-    image: {
+    menuPic: {
       type: String,
       required: true,
     },
