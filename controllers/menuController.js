@@ -70,7 +70,7 @@ exports.getSingleMenuItemController = async (
 exports.editMenuController = async (req, res) => {
   const { id } = req.params;
 
-  const { itemName, description, category, price, isAvailable,menuPic } = req.body;
+  const { itemName, description, category, price, availability,menuPic } = req.body;
 
   const uploadImage = req.file ? req.file.filename : menuPic;
 
