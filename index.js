@@ -10,6 +10,7 @@ const saffronServer = express()
 saffronServer.use(cors())
 saffronServer.use(express.json())
 saffronServer.use(router)
+saffronServer.use('/uploads',express.static('./uploads'))
 
 
 const PORT = 4000 || process.env.PORT

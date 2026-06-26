@@ -1,60 +1,58 @@
-const menu = require("../model/menuModal")
+const menus = require("../model/menuModal");
+
 
 //add menu item
 exports.addMenuItem = async (req, res) => {
+  console.log("Inside addProjectController");
+  const userId = req.userId
+  console.log(userId);
+  const { itemName, description, category, price } = req.body
+  const menuPic = req.file.filename
+  console.log(itemName, description, category, price,menuPic);
+
   try {
-    const {
-      foodName,
-      category,
-      description,
-      price,
-      image,
-    } = req.body;
-
-    const existingFood = await Menu.findOne({
-      foodName,
-    });
-
-    if (existingFood) {
-      return res.status(406).json(
-        "Food item already exists"
-      );
+    const existingMenuItem = await menus.findOne({ itemName })
+    if (existingMenuItem) {
+      res.status(406).json("Menu already exists in our collection...Please upload another one!!!")
+    } else {
+      const newMenuItem = new menus({
+        itemName,
+        description,
+        category,
+        price,
+        menuPic,
+        userId
+      })
+      await newMenuItem.save()
+      res.status(200).json(newMenuItem)
     }
-
-    const newFood = new Menu({
-      foodName,
-      category,
-      description,
-      price,
-      image,
-    });
-
-    await newFood.save();
-
-    res.status(200).json(newFood);
-  } catch (err) {
-    res.status(500).json(err);
+  } catch (error) {
+    res.status(401).json(error)
   }
-};
-//get all menu item
-exports.getAllMenuItems = async (req, res) => {
-  try {
-    const menuItems = await Menu.find();
 
-    res.status(200).json(menuItems);
+}
+
+
+
+//get all menu item
+exports.getAllMenuItemsController = async (req, res) => {
+  try {
+    const AllmenuItems = await menus.find();
+
+    res.status(200).json(AllmenuItems);
   } catch (err) {
     res.status(500).json(err);
   }
 };
 //get single menu item
-exports.getSingleMenuItem = async (
+exports.getSingleMenuItemController = async (
   req,
   res
 ) => {
   try {
     const { id } = req.params;
 
-    const item = await Menu.findById(id);
+    const item = await menus.findById(id);
 
     if (!item) {
       return res
@@ -67,58 +65,46 @@ exports.getSingleMenuItem = async (
     res.status(500).json(err);
   }
 };
-//update menu
-exports.updateMenuItem = async (
-  req,
-  res
-) => {
+
+//edit menu
+exports.editMenuController = async (req, res) => {
+  const { id } = req.params;
+
+  const { itemName, description, category, price, isAvailable,menuPic } = req.body;
+
+  const uploadImage = req.file ? req.file.filename : menuPic;
+
   try {
-    const { id } = req.params;
+    const updatedMenu = await menus.findByIdAndUpdate(
+      id,
+      {
+        itemName,
+        description,
+        category,
+        price,
+        menuPic: uploadImage,
+        isAvailable,
+      },
+      { new: true }
+    );
 
-    const {
-      foodName,
-      category,
-      description,
-      price,
-      image,
-      availability,
-    } = req.body;
+    await updatedMenu.save();
 
-    const updatedFood =
-      await Menu.findByIdAndUpdate(
-        id,
-        {
-          foodName,
-          category,
-          description,
-          price,
-          image,
-          availability,
-        },
-        {
-          new: true,
-        }
-      );
-
-    res.status(200).json(updatedFood);
+    res.status(200).json(updatedMenu);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(401).json(err);
   }
 };
-//delete menu
-exports.deleteMenuItem = async (
-  req,
-  res
-) => {
+
+// Delete Menu
+exports.deleteMenuController = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
+    await menus.findByIdAndDelete(id);
 
-    await Menu.findByIdAndDelete(id);
-
-    res
-      .status(200)
-      .json("Food item deleted");
+    res.status(200).json("Menu Deleted Successfully");
   } catch (err) {
-    res.status(500).json(err);
+    res.status(401).json(err);
   }
 };
