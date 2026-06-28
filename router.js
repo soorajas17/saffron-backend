@@ -14,8 +14,7 @@ const paymentController = require("./controllers/paymentController");
 const notificationController = require("./controllers/notificationController");
 const dashboardController = require("./controllers/dashboardController");
 const staffController = require("./controllers/staffController");
-const settingsController = require("./controllers/settingsController");
-
+const settingsController = require("../controllers/settingsController");
 const searchController = require("./controllers/globalsearchController");
 
 
@@ -26,7 +25,7 @@ router.post('/register',authController.addUserController)
 //login
 router.post('/login',authController.logincontroller)
 // get all user
-router.get("/all-users",jwtMiddleware,authController.getAllUserController)
+router.get("/all-users",authController.getAllUserController)
 
 
 //add menu item - admin -jwt
@@ -40,7 +39,7 @@ router.put('/menu/:id/edit',jwtMiddleware,multerMiddleware.single('menuPic'),men
 //delete menu item -admin-jwt
 router.delete('/menu/:id/delete',jwtMiddleware,menuController.deleteMenuController)
 
-
+//==========================================CART=========================================
 // Add Item To Cart-jwt
 router.post("/add-to-cart",jwtMiddleware,cartController.addToCartController);
 // Get User Cart-jwt
@@ -72,6 +71,8 @@ router.post("/reservations", jwtMiddleware, reservationController.createReservat
 router.get("/reservations/all", jwtMiddleware, reservationController.getAllReservationsController);
 // Get Logged-in User Reservations
 router.get("/reservations/user", jwtMiddleware, reservationController.getUserReservationsController);
+// Get Available Slots
+router.get("/reservations/slots",reservationController.getAvailableSlotsController);
 // Get Single Reservation
 router.get("/reservations/:id", jwtMiddleware, reservationController.getSingleReservationController);
 // Update Reservation
@@ -82,13 +83,11 @@ router.patch("/reservations/:id/confirm", jwtMiddleware, reservationController.c
 router.patch("/reservations/:id/arrived", jwtMiddleware, reservationController.markArrivedController);
 // Cancel Reservation
 router.delete("/reservations/:id", jwtMiddleware, reservationController.cancelReservationController);
-// Get Available Slots
-router.get("/reservations/slots", reservationController.getAvailableSlotsController);
+
 
 // ==========================================OFFERS==========================================
-
 // Add Offer
-router.post("/offers", jwtMiddleware, offerController.addOfferController);
+router.post("/offers", multerMiddleware.single('offerimage'),jwtMiddleware, offerController.addOfferController);
 // Get All Offers
 router.get("/offers", offerController.getOffersController);
 // Get Single Offer
@@ -98,7 +97,7 @@ router.patch("/offers/:id", jwtMiddleware, offerController.updateOfferController
 // Delete Offer
 router.delete("/offers/:id", jwtMiddleware, offerController.deleteOfferController);
 // Apply Coupon
-router.post("/promotions/apply", jwtMiddleware, offerController.applyCouponController);
+router.post("/promotions/apply",jwtMiddleware, offerController.applyCouponController);
 
 // ==========================================REVIEWS==========================================
 // Add Review
@@ -141,7 +140,6 @@ router.get("/payments/cards", jwtMiddleware, paymentController.getCardsControlle
 // Get Payment Methods
 router.get("/payments/methods", paymentController.getPaymentMethodsController);
 // Delete Card
-// ==========================================
 router.delete("/payments/cards/:id", jwtMiddleware, paymentController.deleteCardController);
 
 
@@ -174,7 +172,6 @@ router.post("/staff", jwtMiddleware, staffController.addStaffController);
 // Get All Staff
 router.get("/staff", jwtMiddleware, staffController.getStaffController);
 // Get Single Staff
-// ==========================================
 router.get("/staff/:id", jwtMiddleware, staffController.getSingleStaffController);
 // Update Staff
 router.patch("/staff/:id", jwtMiddleware, staffController.updateStaffController);
@@ -183,22 +180,29 @@ router.patch("/staff/:id/deactivate", jwtMiddleware, staffController.deactivateS
 // Search Staff
 router.get("/staff/search", jwtMiddleware, staffController.searchStaffController);
 
-
 // ==========================================SETTINGS==========================================
+
 // Get Restaurant Profile
 router.get("/settings/profile", jwtMiddleware, settingsController.getRestaurantProfileController);
+
 // Update Restaurant Profile
 router.patch("/settings/profile", jwtMiddleware, settingsController.updateRestaurantProfileController);
+
 // Upload Logo
 router.post("/settings/logo", jwtMiddleware, multerMiddleware.single("logo"), settingsController.uploadLogoController);
+
 // Get Theme Settings
 router.get("/settings/theme", jwtMiddleware, settingsController.getThemeController);
+
 // Save Settings
 router.patch("/settings", jwtMiddleware, settingsController.saveSettingsController);
+
 // Get User Roles
 router.get("/settings/roles", jwtMiddleware, settingsController.getRolesController);
+
 // Update User Roles
-router.patch("/settings/roles/:id", jwtMiddleware, settingsController.updateRolesController);
+router.patch("/settings/roles", jwtMiddleware, settingsController.updateRolesController);
+
 
 //==========================================GLOBAL SEARCH==========================================
 // Global Search

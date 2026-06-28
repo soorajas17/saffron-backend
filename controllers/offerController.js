@@ -15,6 +15,7 @@ exports.addOfferController = async (req, res) => {
       startDate,
       endDate,
     } = req.body;
+     const  offerimage= req.file.filename
 
     const existingOffer = await offers.findOne({ couponCode });
 
@@ -29,6 +30,7 @@ exports.addOfferController = async (req, res) => {
       couponCode,
       startDate,
       endDate,
+      offerimage
     });
 
     await newOffer.save();
@@ -140,12 +142,11 @@ exports.deleteOfferController = async (req, res) => {
 
 // ======================================
 // Apply Coupon
-// ======================================
 exports.applyCouponController = async (req, res) => {
 
   try {
 
-    const { couponCode } = req.body;
+    const {couponCode} = req.body;
 
     const offer = await offers.findOne({ couponCode });
 

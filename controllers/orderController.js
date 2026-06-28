@@ -5,8 +5,6 @@ const carts = require ("../model/cartModel")
 
 
 // Place Order
-// POST /api/order/place
-
 exports.placeOrderController = async (req, res) => {
 
   try {
@@ -54,8 +52,6 @@ exports.placeOrderController = async (req, res) => {
 
 
 // Get Logged-in User Orders
-// GET /api/order/user
-// =========================================
 exports.getUserOrdersController = async (req, res) => {
 
   try {
@@ -77,8 +73,6 @@ exports.getUserOrdersController = async (req, res) => {
 
 
 // Get All Orders (Admin)
-// GET /api/order/all
-
 exports.getAllOrdersController = async (req, res) => {
 
   try {
@@ -98,8 +92,6 @@ exports.getAllOrdersController = async (req, res) => {
 
 
 // Update Order Status (Admin)
-// PATCH /api/order/status/:id
-
 exports.updateOrderStatusController = async (req, res) => {
 
   try {
@@ -127,8 +119,6 @@ exports.updateOrderStatusController = async (req, res) => {
 
 
 // Cancel Order (User)
-// PATCH /api/order/cancel/:id
-
 exports.cancelOrderController = async (req, res) => {
 
   try {

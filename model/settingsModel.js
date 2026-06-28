@@ -2,6 +2,12 @@ const mongoose = require("mongoose");
 
 const settingsSchema = new mongoose.Schema(
   {
+    key: {
+      type: String,
+      default: "restaurant_settings",
+      unique: true,
+    },
+
     restaurantName: {
       type: String,
       required: true,
@@ -37,7 +43,6 @@ const settingsSchema = new mongoose.Schema(
         type: String,
         default: "#ff5722",
       },
-
       secondaryColor: {
         type: String,
         default: "#ffffff",
@@ -47,16 +52,11 @@ const settingsSchema = new mongoose.Schema(
     roles: [
       {
         roleName: String,
-
         permissions: [String],
       },
     ],
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-const settings = mongoose.model("setting", settingsSchema);
-
-module.exports = settings;
+module.exports = mongoose.model("Setting", settingsSchema);

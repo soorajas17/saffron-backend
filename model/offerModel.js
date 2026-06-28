@@ -16,8 +16,13 @@ const offerSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    couponCode: {
+      type: String,
+      required: true,
+      unique: true,
+    },
 
-    image: {
+    offerimage: {
       type: String,
       required: true,
     },
