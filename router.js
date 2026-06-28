@@ -17,6 +17,7 @@ const staffController = require("./controllers/staffController");
 const settingsController = require("./controllers/settingsController");
 
 const searchController = require("./controllers/globalsearchController");
+const { getProfileController } = require('./controllers/userController')
 
 
 const router = new express.Router()
@@ -27,7 +28,8 @@ router.post('/register',authController.addUserController)
 router.post('/login',authController.logincontroller)
 // get all user
 router.get("/all-users",jwtMiddleware,authController.getAllUserController)
-
+// profile
+router.get("/profile", jwtMiddleware,getProfileController)
 
 //add menu item - admin -jwt
 router.post('/add-menu',jwtMiddleware,multerMiddleware.single('menuPic'),menuController.addMenuItemController)
